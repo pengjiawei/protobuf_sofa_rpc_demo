@@ -19,12 +19,15 @@ public:
     virtual void Foo(::google::protobuf::RpcController *controller, const ::FooRequest *request, ::FooResponse *response,
              ::google::protobuf::Closure *done) override {
         //controller can return some basic message of the request process,such as reason
+        sofa::pbrpc::RpcController* sofa_controller = static_cast<sofa::pbrpc::RpcController*>(controller);
         if (request->code() == 0){
             response->set_text("I know you are code 0");
         } else if(request->code() == 1){
             response->set_text("I know you are code 1");
         } else {
+            sofa_controller->SetFailed("enter 0 or 1 plz");
             response->set_text("default");
+            printf("failed = %d\n",sofa_controller->Failed());
         }
         done->Run();
     }
@@ -33,17 +36,18 @@ public:
 bool thread_init_func()
 {
     sleep(1);
-    printf("Init work thread succeed");
+    printf("Init work thread succeed\n");
     return true;
 }
 
 void thread_dest_func()
 {
-    printf("Destroy work thread succeed");
+    printf("Destroy work thread succeed\n");
 }
 
 int main(){
     sofa::pbrpc::RpcServerOptions options;
+    options.disable_builtin_services = true;
     options.work_thread_init_func = sofa::pbrpc::NewPermanentExtClosure(&thread_init_func);
     options.work_thread_dest_func = sofa::pbrpc::NewPermanentExtClosure(&thread_dest_func);
     sofa::pbrpc::RpcServer rpc_server(options);

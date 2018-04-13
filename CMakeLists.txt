@@ -14,12 +14,16 @@ add_library(service include/service.pb.cc)
 include_directories(/exapp/pengjiawei/sofa-pbrpc/output/include)
 link_directories(/exapp/pengjiawei/sofa-pbrpc/output/lib)
 
-link_libraries(sofa-pbrpc ${PROTOBUF_LIBRARIES} snappy profiler tcmalloc_and_profiler pthread z service)
+link_libraries(sofa-pbrpc ${PROTOBUF_LIBRARIES} snappy pthread z service)
+
 add_executable(client_demo src/client_demo.cpp)
 target_link_libraries(client_demo sofa-pbrpc )
 
 add_executable(server_demo src/server_demo.cpp)
-target_link_libraries(server_demo sofa-pbrpc )
+target_link_libraries(server_demo sofa-pbrpc libtcmalloc_and_profiler.a unwind)
 
 add_executable(mock_test mock_test/mock_test.cpp)
 target_link_libraries(mock_test gtest sofa-pbrpc)
+
+add_executable(http_client_demo src/http_client_demo.cpp)
+target_link_libraries(http_client_demo curlpp pthread curl)

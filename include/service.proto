@@ -1,5 +1,6 @@
 syntax = "proto3";
 option cc_generic_services = true;
+option java_generic_services = true;
 //not neccesary
 //import "sofa/pbrpc/rpc_option.proto";
 message FooRequest{

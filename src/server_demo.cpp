@@ -48,6 +48,7 @@ void thread_dest_func()
 int main(){
     sofa::pbrpc::RpcServerOptions options;
     options.disable_builtin_services = true;
+    options.no_delay = true;
     options.work_thread_init_func = sofa::pbrpc::NewPermanentExtClosure(&thread_init_func);
     options.work_thread_dest_func = sofa::pbrpc::NewPermanentExtClosure(&thread_dest_func);
     sofa::pbrpc::RpcServer rpc_server(options);
@@ -62,7 +63,8 @@ int main(){
 //    while(1){
 //        sleep(1);
 //    }
+
     rpc_server.Run();
-//    delete options.work_thread_init_func;
-//    delete options.work_thread_dest_func;
+    delete options.work_thread_init_func;
+    delete options.work_thread_dest_func;
 }

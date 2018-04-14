@@ -1,13 +1,13 @@
-syntax = "proto3";
+syntax = "proto2";
 option cc_generic_services = true;
 option java_generic_services = true;
 //not neccesary
 //import "sofa/pbrpc/rpc_option.proto";
 message FooRequest{
-    int32 code = 1;
+    required int32 code = 1;
 }
 message FooResponse{
-    string text = 1;
+    required string text = 1;
 }
 service FooService{
     rpc Foo(FooRequest) returns(FooResponse);

@@ -1,10 +1,7 @@
 /**
  *
  *
- * this is just a test,you can use any http framework as you like
- *
- *
- *
+ * this is just a test using curlpp,and you can use any http framework as you like
  *
  *
  */
@@ -74,8 +71,8 @@ int main(int, char **) {
 
         //construct param
         curlpp::options::Url url(std::string("http://localhost:8421/FooService.Foo"));
-        curlpp::options::PostFields postFields(request_string);
-        curlpp::options::PostFieldSize postFieldSize(request_string.size());
+//        curlpp::options::PostFields postFields(request_string);
+//        curlpp::options::PostFieldSize postFieldSize(request_string.size());
 
         //callback function which are used to write the response of http post request
         curlpp::types::WriteFunctionFunctor functor(WriteMemoryCallback);
@@ -85,11 +82,12 @@ int main(int, char **) {
         curlpp::Easy request;
 
         request.setOpt(header);
-        request.setOpt(postFields);
-        request.setOpt(postFieldSize);
+        request.setOpt(new curlpp::options::Post(false));
+//        request.setOpt(postFields);
+//        request.setOpt(postFieldSize);
         request.setOpt(url);
-//        request.setOpt(curlpp::options::Verbose(true));
-        request.setOpt(test)
+        request.setOpt(curlpp::options::Verbose(true));
+        request.setOpt(test);
 
         //send a request,there will print the response of request
         request.perform();

@@ -12,3 +12,15 @@ message FooResponse{
 service FooService{
     rpc Foo(FooRequest) returns(FooResponse);
 }
+
+message Empty{
+
+}
+
+message NORequestResponse{
+    required string response = 1;
+}
+
+service NoRequestService{
+    rpc NoRS(Empty) returns(NORequestResponse);
+}

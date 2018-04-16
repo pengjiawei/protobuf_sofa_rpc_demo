@@ -57,8 +57,12 @@ int main(int, char **) {
         fooRequest.set_code(1);
         //protobuf body need to be byte array
         std::string request_string;
-        request_string = fooRequest.SerializeAsString();
+        fooRequest.SerializeToString(&request_string);
 
+        std::cout << " rrrrrrrrrr = "<< request_string.size() <<std::endl;
+        for (auto &&item : request_string) {
+            std::cout << item <<",";
+        }
         // That's all that is needed to do cleanup of used resources (RAII style).
         curlpp::Cleanup myCleanup;
 
@@ -69,8 +73,12 @@ int main(int, char **) {
 
         curlpp::options::HttpHeader header(header_list);
 
+        std::string total_string = "http://localhost:8421/FooService.Foo";
+        total_string.append("?request=");
+        total_string.append(request_string);
+        printf("total string url = %s\n",total_string.c_str());
         //construct param
-        curlpp::options::Url url(std::string("http://localhost:8421/FooService.Foo"));
+        curlpp::options::Url url(total_string);
 //        curlpp::options::PostFields postFields(request_string);
 //        curlpp::options::PostFieldSize postFieldSize(request_string.size());
 
